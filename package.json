@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "tsc -p .",
-    "start": "node index.js"
+    "start": "ts-node ./src/index.ts"
   },
   "repository": {
     "type": "git",
