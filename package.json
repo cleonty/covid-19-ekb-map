@@ -2,7 +2,10 @@
   "name": "covid-19-yandex-maps",
   "version": "1.0.0",
   "description": "",
-  "main": "placemark.js",
+  "main": "index.js",
+  "engines": {
+    "node": "12.x"
+  },
   "scripts": {
     "build": "tsc -p .",
     "start": "node index.js"
