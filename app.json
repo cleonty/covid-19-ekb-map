@@ -1,0 +1,6 @@
+{
+  "name": "COVID-19 Ekaterinburg map",
+  "repository": "https://github.com/cleonty/covid-19-ekb-map",
+  "keywords": ["covid-19"],
+  "image": "heroku/nodejs"
+}
