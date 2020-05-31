@@ -23,8 +23,7 @@
   "homepage": "https://github.com/cleonty/covid-19-ekb-map#readme",
   "devDependencies": {
     "@types/express": "^4.17.6",
-    "@types/node": "^14.0.6",
-
+    "@types/node": "^14.0.6"
   },
   "dependencies": {
     "express": "^4.17.1",
