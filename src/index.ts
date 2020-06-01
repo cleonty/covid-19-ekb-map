@@ -9,7 +9,7 @@ express()
   .get('/data/COVID.json', (req: express.Request, res: express.Response) => {
     https.get('https://www.gorses.na4u.ru/data/COVID.json', { rejectUnauthorized: false }, (response: IncomingMessage) => {
       const date = (new Date()).toISOString().substr(0, 10);
-      const file = fs.createWriteStream(`./data/COVID-${date}.txt`);
+      const file = fs.createWriteStream(`./data/COVID-${date}.json`);
       response.pipe(res, { end: true });
       response.pipe(file, { end: true });
     });
