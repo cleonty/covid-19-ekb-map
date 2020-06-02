@@ -52,8 +52,8 @@ function init() {
   objectManagerNew.clusters.options.set('preset', 'islands#redClusterIcons');
   objectManagerOld.objects.options.set('preset', 'islands#blueDotIcon');
   objectManagerOld.clusters.options.set('preset', 'islands#blueClusterIcons');
-  myMap.geoObjects.add(objectManagerNew);
   myMap.geoObjects.add(objectManagerOld);
+  myMap.geoObjects.add(objectManagerNew);
 
   const defaultData = { "type": "FeatureCollection", "features": [] };
   Promise.all([
