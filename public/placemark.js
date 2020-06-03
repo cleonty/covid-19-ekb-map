@@ -61,8 +61,54 @@ function init() {
     fetch('/data/COVID-yesterday.json').catch(_ => defaultData).then(res => res.json())
   ]).then(([today, yesterday]) => {
     const newCases = findNewCases(today, yesterday);
+    console.log(`new cases: ${newCases.length}`);
     const newData = { "type": "FeatureCollection", "features": newCases };
     objectManagerOld.add(yesterday);
     objectManagerNew.add(newData);
+    const CustomControlClass = createControlClass();
+    const customControl = new CustomControlClass({newCaseCount: newCases.length});
+    myMap.controls.add(customControl, {
+      float: 'true',
+      position: {
+        top: 50,
+        left: 10
+      },
+    });
   });
+}
+
+function createControlClass() {
+  const CustomControlClass = function (options) {
+    CustomControlClass.superclass.constructor.call(this, options);
+    this._$content = null;
+    this._geocoderDeferred = null;
+    this.newCaseCount = options.newCaseCount;
+  };
+
+  ymaps.util.augment(CustomControlClass, ymaps.collection.Item, {
+    onAddToMap: function (map) {
+      CustomControlClass.superclass.onAddToMap.call(this, map);
+      this._lastCenter = null;
+      this.getParent().getChildElement(this).then(this._onGetChildElement, this);
+    },
+
+    onRemoveFromMap: function (oldMap) {
+      this._lastCenter = null;
+      if (this._$content) {
+        this._$content.remove();
+        this._mapEventGroup.removeAll();
+      }
+      CustomControlClass.superclass.onRemoveFromMap.call(this, oldMap);
+    },
+
+    _onGetChildElement: function (parentDomContainer) {
+      const div = document.createElement('div');
+      div.className = 'new-cases-label';
+      this._$content = parentDomContainer.appendChild(div);
+      this._mapEventGroup = this.getMap().events.group();
+      this._$content.appendChild(document.createTextNode(`New cases today: ${this.newCaseCount}`));
+    },
+
+  });
+  return CustomControlClass;
 }
