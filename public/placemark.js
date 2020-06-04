@@ -66,7 +66,11 @@ function init() {
     objectManagerOld.add(yesterday);
     objectManagerNew.add(newData);
     const CustomControlClass = createControlClass();
-    const customControl = new CustomControlClass({newCaseCount: newCases.length});
+    debugger;
+    const customControl = new CustomControlClass({
+      newCaseCount: newCases.length,
+      totalCaseCount: yesterday.features.length + newCases.length,
+    });
     myMap.controls.add(customControl, {
       float: 'true',
       position: {
@@ -83,6 +87,7 @@ function createControlClass() {
     this._$content = null;
     this._geocoderDeferred = null;
     this.newCaseCount = options.newCaseCount;
+    this.totalCaseCount = options.totalCaseCount;
   };
 
   ymaps.util.augment(CustomControlClass, ymaps.collection.Item, {
@@ -106,7 +111,12 @@ function createControlClass() {
       div.className = 'new-cases-label';
       this._$content = parentDomContainer.appendChild(div);
       this._mapEventGroup = this.getMap().events.group();
-      this._$content.appendChild(document.createTextNode(`New cases today: ${this.newCaseCount}`));
+      const newCasesDiv = document.createElement('div');
+      newCasesDiv.appendChild(document.createTextNode(`New cases today: ${this.newCaseCount}`));
+      const totalCasesDiv = document.createElement('div');
+      totalCasesDiv.appendChild(document.createTextNode(`Total cases: ${this.totalCaseCount}`));
+      this._$content.appendChild(newCasesDiv);
+      this._$content.appendChild(totalCasesDiv);
     },
 
   });
