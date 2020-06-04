@@ -74,7 +74,7 @@ function init() {
     myMap.controls.add(customControl, {
       float: 'true',
       position: {
-        top: 50,
+        top: 46,
         left: 10
       },
     });
