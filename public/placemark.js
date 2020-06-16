@@ -66,7 +66,6 @@ function init() {
     objectManagerOld.add(yesterday);
     objectManagerNew.add(newData);
     const CustomControlClass = createControlClass();
-    debugger;
     const customControl = new CustomControlClass({
       newCaseCount: newCases.length,
       totalCaseCount: yesterday.features.length + newCases.length,
