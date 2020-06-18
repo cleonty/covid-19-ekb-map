@@ -57,8 +57,8 @@ function init() {
 
   const defaultData = { "type": "FeatureCollection", "features": [] };
   Promise.all([
-    fetch('/data/COVID.json').catch(_ => defaultData).then(res => res.json()),
-    fetch('/data/COVID-yesterday.json').catch(_ => defaultData).then(res => res.json())
+    fetch('/data/COVID.json').catch(_ => defaultData).then(res => res.ok ? res.json() : defaultData),
+    fetch('/data/COVID-yesterday.json').catch(_ => defaultData).then(res => res.ok ? res.json() : defaultData)
   ]).then(([today, yesterday]) => {
     const newCases = findNewCases(today, yesterday);
     console.log(`new cases: ${newCases.length}`);
