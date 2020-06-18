@@ -58,17 +58,17 @@ function init() {
   const defaultData = { "type": "FeatureCollection", "features": [] };
   Promise.all([
     fetch('/data/COVID.json').catch(_ => defaultData).then(res => res.ok ? res.json() : defaultData),
-    fetch('/data/COVID-yesterday.json').catch(_ => defaultData).then(res => res.ok ? res.json() : defaultData)
-  ]).then(([today, yesterday]) => {
-    const newCases = findNewCases(today, yesterday);
+    fetch('/data/COVID-previous.json').catch(_ => defaultData).then(res => res.ok ? res.json() : defaultData)
+  ]).then(([today, previous]) => {
+    const newCases = findNewCases(today, previous);
     console.log(`new cases: ${newCases.length}`);
     const newData = { "type": "FeatureCollection", "features": newCases };
-    objectManagerOld.add(yesterday);
+    objectManagerOld.add(previous);
     objectManagerNew.add(newData);
     const CustomControlClass = createControlClass();
     const customControl = new CustomControlClass({
       newCaseCount: newCases.length,
-      totalCaseCount: yesterday.features.length + newCases.length,
+      totalCaseCount: previous.features.length + newCases.length,
     });
     myMap.controls.add(customControl, {
       float: 'true',

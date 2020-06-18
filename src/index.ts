@@ -14,13 +14,24 @@ express()
       response.pipe(file, { end: true });
     });
   })
-  .get('/data/COVID-yesterday.json', (req: express.Request, res: express.Response) => {
+  .get('/data/COVID-previous.json', (req: express.Request, res: express.Response) => {
     const date = new Date();
-    date.setDate(date.getDate() - 1);
-    const yesterday = date.toISOString().substr(0, 10);
-      const file = fs.createReadStream(`./data/COVID-${yesterday}.json`);
-      file.on('error', (e) => res.status(404).json({error: e.message}));
-      file.pipe(res, { end: true });
+    let fileFound = false;
+    for (let i = 1; i < 1000; i++) {
+      date.setDate(date.getDate() - 1);
+      const previous = date.toISOString().substr(0, 10);
+      const filename = `./data/COVID-${previous}.json`;
+      if (fs.existsSync(filename)) {
+        fileFound = true;
+        const file = fs.createReadStream(filename);
+        file.on('error', (e) => res.status(404).json({ error: e.message }));
+        file.pipe(res, { end: true });
+        break;
+      }
+    }
+    if (!fileFound) {
+      res.status(404).json({ error: 'previous data not found' });
+    }
   })
   .get('/env', (req: express.Request, res: express.Response) => {
     const data = { env: process.env, cwd: process.cwd() };
